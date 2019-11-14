@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> print_watch</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" print_watch">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html356 HREF="node26.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html354 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html348 HREF="node24.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html358 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html357 HREF="node26.html"> read_watch</A>
+<B>Up:</B> <A NAME=tex2html355 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html349 HREF="node24.html"> pause_watch</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION0010110000000000000000> print_watch</A></H1>
+<P>
+PRINT_WATCH <BR>  <BR>
+<P>
+prints the current value of a StopWatch
+  watch <BR>
+<P>
+<b> SYNOPSIS</b> <BR> 
+subroutine <b> print_watch</b><i> (watch, clock, title, form, err)</i>
+<P>
+<BR>
+<DL COMPACT><DT>
+<DD> type (watchtype), intent(IN) :: watch
+<DT>OR
+<DD> type (watchtype), intent(IN) :: watch(:)
+<DT>OR
+<DD> type (watchgroup), intent(IN) :: watch
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> character(len=*), optional, intent(IN) :: clock
+<DT>OR
+<DD> character(len=*), intent(IN) :: clock(:)
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> character(len=*), optional, intent(IN) :: title, form
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> integer, optional, intent(OUT) :: err
+<P>
+ </DL>
+<P>
+<b> DESCRIPTION</b> <BR> 
+Prints the specified clocks of the specified watches.  A title line is printed
+followed by two lines for each watch, the first containing the name of the
+watch and the second containing the values of the specified clocks.  Output is
+written to a user specified
+I/O unit (see <b> option_stopwatch</b>(3))
+ which is 6 by default.
+<P>
+One or more watches must be specified.  The argument <i> watch</i>
+ can be
+a single variable of type <i> watchtype</i>
+ (see <b> stopwatch</b>(3))
+ to print one
+watch, an array of type <i> watchtype</i>
+ to print several watches, or a variable of
+type <i> watchgroup</i>
+ (see <b> stopwatch</b>(3))
+ to print the watches in a group.
+<P>
+The optional argument <i> clock</i>
+ specifies which clocks to print from the
+specified watch(es).  If omitted, the current default clocks (see
+<b> option_stopwatch</b>(3))
+ are printed.  If
+present, <i> clock</i>
+ must be a character string containing 'cpu', 'user',
+'sys', or 'wall', or an array of such character strings.
+<P>
+The optional argument <i> title</i>
+ is a character string to be printed
+before printing the watch values.  If omitted, the string ``Times printed
+by StopWatch:'' is printed.
+<P>
+The optional argument <i> form</i>
+ determines the form for printing time.
+The valid values are:
+<DL COMPACT><DT>'sec',
+<DD> seconds
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>'hh:mm:ss',
+<DD> colon separated hours, minutes and seconds
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>'[[hh:]mm:]ss',
+<DD> same as 'hh:mm:ss' except hours and minutes are printed only if nonzero
+<P>
+ </DL>
+<P>
+If omitted, the current default form is used.  The default form is initially
+'sec' and can be reset by <b> option_stopwatch</b>(3)
+.
+<P>
+<b> DIAGNOSTICS</b> <BR> 
+If present, the optional intent OUT integer argument <i> err</i>
+ returns
+a status code.  The code is the sum of the values listed below.
+<P>
+An error message will be printed to a specified I/O unit (unit 6
+by default) if <i> print_errors</i>
+ is TRUE (default is TRUE).
+The error message contains
+more detail about the cause of the error than can be obtained from just the
+status code, so you should set <i> print_errors</i>
+ to TRUE if you have
+trouble determining the cause of the error.
+<P>
+If <i> abort_errors</i>
+ is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will continue execution
+but the watch(es) will not be printed.
+<P>
+See <b> option_stopwatch</b>(3)
+ for further
+information on <i> print_errors, abort_errors</i>
+ and I/O units.
+<P>
+The relevant status codes and messages are:
+<DL COMPACT><DT>0
+<DD> No errors; execution successful.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>1
+<DD> 
+Watch needs to be created.
+This error occurs if you attempt to print a watch that has been destroyed.
+The watch must first be created again.  See also the comment about watches
+that have never been created in the BUGS section.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>4
+<DD> 
+Watch is in an unknown state.
+This occurs if StopWatch
+  does not recognize the state (running, stopped, etc.)
+that the watch is in.  This error should not occur, and indicates an internal
+bug in StopWatch
+ .
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>8
+<DD> 
+Invalid clock type.
+This occurs if <i> clock</i>
+ is present and one of the specified clocks
+is not supported by the implementation.
+See <b> inquiry_stopwatch</b>(3)
+ to determine what clocks are
+available.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>256
+<DD> 
+I/O unit is not open for writing.
+The I/O unit to which <b> print_watch</b>
+ expects to write is not open for
+writing.  The I/O unit number is set by <i> io_unit_print</i>
+ in
+<b> option_stopwatch</b>
+ and is 6 by default.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>512
+<DD> 
+Failed to allocate required memory.
+When <b> print_watch</b>
+ is called with an array or group of watches, temporary
+memory is allocated.  This error occurs if the Fortran
+<b> allocate</b>
+ statement returns a
+nonzero status indicating that memory could not be allocated.  Avoid memory
+leaks by always destroying watches and groups before recreating them, and
+destroying local variable watches and groups before returning from a
+subroutine.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>1024
+<DD> 
+Error occurred while deallocating memory.
+This error occurs if the Fortran <b> deallocate</b>
+ statement returns a nonzero status while
+deallocating temporary memory used for an array or group of watches.  The
+watches are printed, but be aware that other problems could develop as a
+result of the deallocate error.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>2048
+<DD> 
+Illegal output form.
+This error occurs if <i> form</i>
+ is not one of the strings listed
+above.
+<P>
+ </DL>
+<P>
+In addition to the run time diagnostics generated by StopWatch
+ , the following
+problems may arise: <BR>
+<P>
+<DL COMPACT><DT><IMG  ALIGN=BOTTOM ALT="" SRC="img9.gif">
+<DD> 
+In Fortran 90, the character strings in an array constructor must all have the
+same length.  Pad three letter clock names with a blank on the right to make
+a four character string, for example, 'cpu '.
+<P>
+ </DL>
+<P>
+<b> EXAMPLES</b> <BR> 
+<tt> type (watchtype) w1, w2(3)</tt> <BR>
+<tt> type (watchgroup) g1</tt> <BR>
+<tt> integer errcode</tt> <BR> 
+<P>
+<tt> call print_watch(w1)</tt> <BR>
+<P>
+<tt> call print_watch(w2, title='Array of 3 watches', err=errcode)</tt> <BR>
+<P>
+<tt> call print_watch(g1, (/'cpu ', 'wall'/), errcode)</tt>
+<P>
+The first call prints the default clocks from a single watch, and the default
+title.  The second call
+prints the default clocks on three watches given as an array and the title
+``Array of 3 watches'', and returns a
+status code.  The third call prints the
+cpu and wall clocks on the watches in the group <i> g1,</i>
+ and returns
+a status code.
+<P>
+<b> BUGS</b> <BR> 
+It cannot be determined whether or not a watch variable or
+watch group has been created (passed
+as an argument to <b> create_watch</b>
+ or <b> create_watchgroup</b>).
+  If
+a watch or watch group that has never been created
+is passed into <b> print_watch,</b>
+ it might
+generate a Fortran error due to passing a pointer with undefined association
+status to the Fortran intrinsic function <b> associated.</b>
+  However, some compilers
+will allow this as an extension to the Fortran 90 standard and recognize that
+the pointer is not associated, in which case the ``Watch needs to be created''
+error message is generated.
+<P>
+ <BR> <HR><A NAME=tex2html356 HREF="node26.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html354 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html348 HREF="node24.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html358 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html357 HREF="node26.html"> read_watch</A>
+<B>Up:</B> <A NAME=tex2html355 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html349 HREF="node24.html"> pause_watch</A>
+<BR> <HR> <P>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

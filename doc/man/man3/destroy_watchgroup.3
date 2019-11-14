@@ -1,0 +1,111 @@
+.TH DESTROY_WATCHGROUP 3 "January 3, 1997" "StopWatch 1.0" "STOPWATCH PROCEDURES"
+.PD 0.0v
+
+
+.SH NAME
+destroy_watchgroup - destroys a StopWatch watch group
+
+.SH SYNOPSIS
+subroutine
+.BI "destroy_watchgroup" "(handle, err)"
+
+
+.IP
+type (watchgroup), intent(INOUT) ::  handle
+.IP
+integer, optional, intent(OUT) ::  err
+
+
+.SH DESCRIPTION
+Destroys a watch group.  Only the group is destroyed,
+not the watches in the group.  To avoid memory leaks,
+watch groups should be destroyed when no longer useful,
+before being recreated, and before returning from a
+subroutine in which the watch group is a local
+variable.
+
+The argument
+.I handle
+is a variable of type
+.I watchgroup
+that is the handle for the group to be destroyed.
+
+.SH DIAGNOSTICS
+If present, the optional intent OUT integer argument
+.I err
+returns a status code.  The code is the sum of the
+values listed below.
+
+An error message will be printed to a specified I/O
+unit (unit 6 by default) if
+.I print_errors
+is TRUE (default is TRUE). The error message contains
+more detail about the cause of the error than can be
+obtained from just the status code, so you should set
+.I print_errors
+to TRUE if you have trouble determining the cause of
+the error.
+
+If
+.I abort_errors
+is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will
+continue execution but the watch group will not be
+created.
+
+See
+.BR "option_stopwatch" "(3)"
+for further information on
+.I print_errors, abort_errors
+and I/O units.
+
+The relevant status codes and messages are:
+
+
+.IP 0
+No errors; execution successful.
+
+
+.IP 1024
+Error occurred while deallocating memory.  This error
+occurs if the Fortran
+.B deallocate
+statement returns a nonzero status while deallocating
+memory used for the group.  The group is destroyed, but
+be aware that other problems could develop as a result
+of the deallocate error.
+
+
+.LP
+
+.SH EXAMPLES
+type (watchgroup) g1, g2
+.br
+integer errcode
+
+call destroy_watchgroup(g1)
+.br
+call destroy_watchgroup(g2, errcode)
+
+The first call destroys the group
+.I g1.
+The second call destroys the group
+.I g2
+and returns a status code.
+
+.SH BUGS
+None known.
+
+.SH AUTHOR
+William F. Mitchell, william.mitchell@nist.gov
+.br
+National Institute of Standards and Technology
+
+
+.SH SEE ALSO
+stopwatch(3), create_watch(3), destroy_watch(3),
+end_pause_watch(3), inquiry_stopwatch(3),
+join_watchgroup(3), leave_watchgroup(3),
+option_stopwatch(3), pause_watch(3), print_watch(3),
+read_watch(3), reset_watch(3), start_watch(3),
+stop_watch(3)

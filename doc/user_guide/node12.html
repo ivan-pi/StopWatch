@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> Subroutine  cpu_second </TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" Subroutine  cpu_second ">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html200 HREF="node13.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html198 HREF="user_guide.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html192 HREF="node11.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html202 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html201 HREF="node13.html"> Acknowledgments</A>
+<B>Up:</B> <A NAME=tex2html199 HREF="user_guide.html"> StopWatch  User's Guide </A>
+<B> Previous:</B> <A NAME=tex2html193 HREF="node11.html"> Trouble Shooting</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION00800000000000000000> Subroutine  cpu_second </A></H1>
+<P>
+<A NAME=cpusec>&#160;</A>
+<P>
+Although Fortran 90 standardized an intrinsic function for wall clock time,
+it does not include a function for CPU time.  At the time of this writing,
+it is anticipated that a CPU time intrinsic function will be added to the
+language in Fortran 95.  If this happens, then StopWatch  can become fully
+system independent once Fortran 95 compilers are widespread.  Meanwhile,
+StopWatch  requires that a system dependent CPU time subroutine be provided
+by the user.  Several versions of this subroutine are included with the
+StopWatch  package.  One of these may work on your system.
+The version <i> cpusec.nil.f</i>
+contains no CPU clock information, and can be used on systems where
+there is no routine to measure CPU time.  If this routine is used,
+only the wall clock will be available.
+<P>
+
+<P>
+
+<P>
+If none of these versions work on your system, you will have to write your
+own version.  The interface is
+<P>
+<PRE>subroutine cpu_second(cpu,user,sys)
+real, intent(OUT) :: cpu, user, sys
+</PRE>
+<P>
+The first argument is for CPU time in seconds.  Where available, the second
+and third arguments should break down the CPU time into ``user'' and ``system''
+CPU time.  If the underlying system does not provide for a way of accessing
+the breakdown (i.e., has only CPU time), then return a negative constant in
+<i> user</i> and <i> sys</i> (for example, <tt> user=-1.; sys=-1.</tt>).
+The value returned in <i> cpu</i> (and
+<i> user</i> and <i> sys</i> where available) should be a nonnegative real number such that
+the difference between two successive calls is the amount of elapsed CPU time
+in seconds.
+<P>
+If you write a new version of <b> cpu_second</b>  because none
+of the supplied versions worked on your system, please send this information
+to the author so that it can be included in the next release.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

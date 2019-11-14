@@ -1,0 +1,261 @@
+.TH PRINT_WATCH 3 "January 3, 1997" "StopWatch 1.0" "STOPWATCH PROCEDURES"
+.PD 0.0v
+
+
+.SH NAME
+print_watch - prints the current value of a StopWatch
+watch
+
+.SH SYNOPSIS
+subroutine
+.BI "print_watch" "(watch, clock, title, form, err)"
+
+
+.IP
+type (watchtype), intent(IN) ::  watch
+.IP OR
+type (watchtype), intent(IN) ::  watch(:)
+.IP OR
+type (watchgroup), intent(IN) ::  watch
+
+
+.IP
+character(len=*), optional, intent(IN) ::  clock
+.IP OR
+character(len=*), intent(IN) ::  clock(:)
+
+
+.IP
+character(len=*), optional, intent(IN) ::  title, form
+
+
+.IP
+integer, optional, intent(OUT) ::  err
+
+
+.SH DESCRIPTION
+Prints the specified clocks of the specified watches.
+A title line is printed followed by two lines for each
+watch, the first containing the name of the watch and
+the second containing the values of the specified
+clocks.  Output is written to a user specified I/O unit
+(see
+.BR "option_stopwatch" "(3))"
+which is 6 by default.
+
+One or more watches must be specified.  The argument
+.I watch
+can be a single variable of type
+.I watchtype
+(see
+.BR "stopwatch" "(3))"
+to print one watch, an array of type
+.I watchtype
+to print several watches, or a variable of type
+.I watchgroup
+(see
+.BR "stopwatch" "(3))"
+to print the watches in a group.
+
+The optional argument
+.I clock
+specifies which clocks to print from the specified
+watch(es).  If omitted, the current default clocks (see
+.BR "option_stopwatch" "(3))"
+are printed.  If present,
+.I clock
+must be a character string containing 'cpu', 'user',
+\'sys', or 'wall', or an array of such character
+strings.
+
+The optional argument
+.I title
+is a character string to be printed before printing the
+watch values.  If omitted, the string ``Times printed
+by StopWatch:''  is printed.
+
+The optional argument
+.I form
+determines the form for printing time.  The valid
+values are:    .IP 'sec',
+seconds
+.IP 'hh:mm:ss',
+colon separated hours, minutes and seconds
+.IP '[[hh:]mm:]ss',
+same as 'hh:mm:ss' except hours and minutes are printed
+only if nonzero
+If omitted, the current default form is used.  The
+default form is initially 'sec' and can be reset by
+.BR "option_stopwatch" "(3)"
+.
+
+.SH DIAGNOSTICS
+If present, the optional intent OUT integer argument
+.I err
+returns a status code.  The code is the sum of the
+values listed below.
+
+An error message will be printed to a specified I/O
+unit (unit 6 by default) if
+.I print_errors
+is TRUE (default is TRUE). The error message contains
+more detail about the cause of the error than can be
+obtained from just the status code, so you should set
+.I print_errors
+to TRUE if you have trouble determining the cause of
+the error.
+
+If
+.I abort_errors
+is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will
+continue execution but the watch(es) will not be
+printed.
+
+See
+.BR "option_stopwatch" "(3)"
+for further information on
+.I print_errors, abort_errors
+and I/O units.
+
+The relevant status codes and messages are:
+
+
+.IP 0
+No errors; execution successful.
+
+
+.IP 1
+Watch needs to be created.  This error occurs if you
+attempt to print a watch that has been destroyed.  The
+watch must first be created again.  See also the
+comment about watches that have never been created in
+the BUGS section.
+
+
+.IP 4
+Watch is in an unknown state.  This occurs if StopWatch
+does not recognize the state (running, stopped, etc.)
+that the watch is in.  This error should not occur, and
+indicates an internal bug in StopWatch.
+
+
+.IP 8
+Invalid clock type.  This occurs if
+.I clock
+is present and one of the specified clocks is not
+supported by the implementation.  See
+.BR "inquiry_stopwatch" "(3)"
+to determine what clocks are available.
+
+
+.IP 256
+I/O unit is not open for writing.  The I/O unit to
+which
+.B print_watch
+expects to write is not open for writing.  The I/O unit
+number is set by
+.I io_unit_print
+in
+.B option_stopwatch
+and is 6 by default.
+
+
+.IP 512
+Failed to allocate required memory.  When
+.B print_watch
+is called with an array or group of watches, temporary
+memory is allocated.  This error occurs if the Fortran
+.B allocate
+statement returns a nonzero status indicating that
+memory could not be allocated.  Avoid memory leaks by
+always destroying watches and groups before recreating
+them, and destroying local variable watches and groups
+before returning from a subroutine.
+
+
+.IP 1024
+Error occurred while deallocating memory.  This error
+occurs if the Fortran
+.B deallocate
+statement returns a nonzero status while deallocating
+temporary memory used for an array or group of watches.
+The watches are printed, but be aware that other
+problems could develop as a result of the deallocate
+error.
+
+
+.IP 2048
+Illegal output form.  This error occurs if
+.I form
+is not one of the strings listed above.
+
+
+.LP
+
+In addition to the run time diagnostics generated by
+StopWatch, the following problems may arise:
+
+
+.IP o
+In Fortran 90, the character strings in an array
+constructor must all have the same length.  Pad three
+letter clock names with a blank on the right to make a
+four character string, for example, 'cpu '.
+
+
+.SH EXAMPLES
+type (watchtype) w1, w2(3)
+.br
+type (watchgroup) g1
+.br
+integer errcode
+
+call print_watch(w1)
+.br
+call print_watch(w2, title='Array of 3 watches',
+err=errcode)
+.br
+call print_watch(g1, (/'cpu ', 'wall'/), errcode)
+
+The first call prints the default clocks from a single
+watch, and the default title.  The second call prints
+the default clocks on three watches given as an array
+and the title ``Array of 3 watches'', and returns a
+status code.  The third call prints the cpu and wall
+clocks on the watches in the group
+.I g1,
+and returns a status code.
+
+.SH BUGS
+It cannot be determined whether or not a watch variable
+or watch group has been created (passed as an argument
+to
+.B create_watch
+or
+.BR "create_watchgroup" ")."
+If a watch or watch group that has never been created
+is passed into
+.B print_watch,
+it might generate a Fortran error due to passing a
+pointer with undefined association status to the
+Fortran intrinsic function
+.B associated.
+However, some compilers will allow this as an extension
+to the Fortran 90 standard and recognize that the
+pointer is not associated, in which case the ``Watch
+needs to be created'' error message is generated.
+
+.SH AUTHOR
+William F. Mitchell, william.mitchell@nist.gov
+.br
+National Institute of Standards and Technology
+
+
+.SH SEE ALSO
+stopwatch(3), create_watchgroup(3), create_watch(3),
+destroy_watchgroup(3), destroy_watch(3),
+end_pause_watch(3), inquiry_stopwatch(3),
+join_watchgroup(3), leave_watchgroup(3),
+option_stopwatch(3), pause_watch(3), read_watch(3),
+reset_watch(3), start_watch(3), stop_watch(3)

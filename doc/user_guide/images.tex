@@ -1,0 +1,297 @@
+\batchmode
+\documentstyle[html,11pt]{report}
+\makeatletter
+
+\title{\bf StopWatch \ User's Guide Version 1.0}
+
+\author{William F.~Mitchell\\ 
+        Information Technology Laboratory \\ 
+        National Institute of Standards and Technology \\ 
+        Gaithersburg, MD 20899 USA}
+
+\date{\today}
+%
+
+\pagestyle{plain}
+
+\setlength{\textheight}{9.0in}
+\setlength{\textwidth}{6.0in}
+
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\topmargin}{-0.75in}
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0ex}
+
+
+
+
+
+
+
+
+\html{}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+
+
+\newcommand {\dir}[1]{{\tt #1}}
+
+\newcommand {\file}[1]{{\it #1}}
+
+\newcommand {\var}[1]{{\it #1}}
+
+\newcommand {\routine}[1]{{\bf #1}}
+
+\newcommand {\type}[1]{{\tt #1}}
+
+\newcommand {\stopwatch}{{\sc StopWatch}}
+
+\renewcommand {\stopwatch}{StopWatch}
+
+\newcommand {\stopwatchmod}{{\tt stopwatch}}
+
+\newcommand {\create}{\routine{create\_watch}}
+
+\newcommand {\destroygroup}{\routine{destroy\_watchgroup}}
+
+\newcommand {\destroy}{\routine{destroy\_watch}}
+
+\newcommand {\epause}{\routine{end\_pause\_watch}}
+
+\newcommand {\inquiry}{\routine{inquiry\_stopwatch}}
+
+\newcommand {\join}{\routine{join\_watchgroup}}
+
+\newcommand {\leave}{\routine{leave\_watchgroup}}
+
+\newcommand {\option}{\routine{option\_stopwatch}}
+
+\newcommand {\pause}{\routine{pause\_watch}}
+
+\newcommand {\print}{\routine{print\_watch}}
+
+\newcommand {\readw}{\routine{read\_watch}}
+
+\newcommand {\reset}{\routine{reset\_watch}}
+
+\newcommand {\start}{\routine{start\_watch}}
+
+\newcommand {\stopw}{\routine{stop\_watch}}
+
+\newcommand {\cpusecond}{\routine{cpu\_second}}
+
+\newcommand {\cgroup}{\routine{create\_watchgroup}}
+
+\newcommand {\watchtype}{\type{watchtype}}
+
+\newcommand {\watchgroup}{\type{watchgroup}}
+
+\newcommand {\ErrCreate}{1}
+
+\newcommand {\ErrBadState}{2}
+
+\newcommand {\ErrUnkState}{4}
+
+\newcommand {\ErrClock}{8}
+
+\newcommand {\ErrTMC}{16}
+
+\newcommand {\ErrNames}{32}
+
+\newcommand {\ErrCtoolong}{64}
+
+\newcommand {\ErrGroup}{128}
+
+\newcommand {\ErrIO}{256}
+
+\newcommand {\ErrAlloc}{512}
+
+\newcommand {\ErrDealloc}{1024}
+
+\newcommand {\ErrForm}{2048}
+
+\newcommand {\ManTitle}[5]{\newpage
+  \addcontentsline{toc}{subsection}{#1}
+  #1 \newline \rule{\textwidth}{1mm} \newline}
+
+\newcommand {\NameSection}[2]{#2 \newline}
+
+\newcommand {\AuthorSection}{}
+
+\newcommand {\OtherSection}[2]{\vspace{\parskip} {\bf #1} \vspace{\parskip} \newline #2}
+
+\newcommand {\bold}[1]{{\bf #1}}
+
+\newcommand {\italic}[1]{{\it #1}}
+
+\newcommand {\jbr}[2]{{\bf #1}#2}
+
+\newcommand {\jbi}[2]{{\bf #1}{\it #2}}
+
+\newcommand {\tip}[2]{\begin{list}{}{
+  \setlength{\topsep}{0in}
+  \setlength{\partopsep}{0in}
+  \setlength{\parsep}{0in}
+  \setlength{\itemsep}{0in}
+  \setlength{\parskip}{0in}
+   } \item[#1] #2 \end{list}}
+
+\renewcommand {\tip}[2]{
+  \begin{itemize}
+  \item[#1] #2 
+  \end{itemize}}
+
+\newcommand {\manonly}[1]{}
+
+\newcommand {\swversion}{1.0}
+
+\makeatother
+\newenvironment{tex2html_wrap}{}{}
+\newwrite\lthtmlwrite
+\def\lthtmltypeout#1{{\let\protect\string\immediate\write\lthtmlwrite{#1}}}%
+\newbox\sizebox
+\begin{document}
+\pagestyle{empty}
+\stepcounter{chapter}
+\stepcounter{chapter}
+\stepcounter{chapter}
+\stepcounter{chapter}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{chapter}
+\stepcounter{chapter}
+\stepcounter{chapter}
+\stepcounter{chapter}
+\stepcounter{chapter}
+\stepcounter{section}
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4509: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4511: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4513: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4515: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4517: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4519: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4521: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4523: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4525: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$i^{\rm th~}$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4527: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$i^{\rm th~}$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4529: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$(i,j)^{\rm th}$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4531: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4533: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4535: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4537: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+\stepcounter{section}
+{\newpage
+\clearpage
+\samepage \setbox\sizebox=\hbox{$\bullet$}\lthtmltypeout{latex2htmlSize :tex2html_wrap_inline4539: \the\ht\sizebox::\the\dp\sizebox.}\box\sizebox
+}
+
+
+\end{document}

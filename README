@@ -1,0 +1,36 @@
+This is StopWatch Version 1.0.
+
+StopWatch is a Fortran 90 module for portable, easy-to-use measurement of
+execution time.  It supports four clocks -- wall clock, CPU clock,
+user CPU clock and system CPU clock -- and returns all times in seconds.
+It provides a simple means of determining which clocks are available,
+and the precision of those clocks.  It is written in a style that allows
+it to be used with the subset languages Elf90 and F, as well as full
+Fortran 90 and Fortran 95 compilers.
+
+StopWatch is used by instrumenting your code with subroutine calls that
+mimic the operation of a stop watch.  StopWatch supports multiple watches,
+and provides the concept of watch groups to allow functions to operate on
+multiple watches simultaneously.
+ 
+Documentation is contained in subdirectory doc.  You can:
+
+1) view user_guide.ps with a postscript previewer
+2) print user_guide.ps on a postscript printer
+3) view user_guide/user_guide.html with a Web browser (e.g. netscape)
+4) read the man pages by adding <path>/stopwatch/man to your MANPATH (where
+   <path> is the directory above this one)
+
+You can initially avoid reading the user's guide by reading the file QUICKSTART.
+
+The StopWatch module, example programs, and makefiles are in subdirectory src.
+
+The StopWatch software and documentation have been produced as part of
+work done by the U.S. Government, and are not subject to copyright in the
+United States.
+ 
+The mention of specific products, trademarks, or brand names in the StopWatch
+documentation is for purposes of identification only.  Such mention is not to
+be interpreted in any way as an endorsement or certification of such products
+or brands by the National Institute of Standards and Technology.
+All trademarks mentioned herein belong to their respective owners.

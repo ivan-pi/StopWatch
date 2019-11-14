@@ -1,0 +1,50 @@
+32a33
+> private
+39,60c40,63
+< private :: create_watch_aa, create_watch_as, create_watch_sa, create_watch_ss, &
+<      destroy_watch_aa, destroy_watch_as, destroy_watch_sa, destroy_watch_ss, &
+<      start_watch_aa, start_watch_as, start_watch_sa, start_watch_ss, start_watch_ga, start_watch_gs, &
+<      stop_watch_aa, stop_watch_as, stop_watch_sa, stop_watch_ss, stop_watch_ga, stop_watch_gs, &
+<      reset_watch_aa, reset_watch_as, reset_watch_sa, reset_watch_ss, reset_watch_ga, reset_watch_gs, &
+<      pause_watch_aa, pause_watch_as, pause_watch_sa, pause_watch_ss, pause_watch_ga, pause_watch_gs, &
+<      end_pause_watch_aa, end_pause_watch_as, end_pause_watch_sa, end_pause_watch_ss, &
+<      end_pause_watch_ga, end_pause_watch_gs, &
+<      read_watch_aa, read_watch_as, read_watch_sa, read_watch_ss, &
+<      read_watch_ax, read_watch_sx, &
+<      print_watch_aa, print_watch_as, print_watch_sa, print_watch_ss, print_watch_ga, print_watch_gs, &
+<      option_stopwatch_a, option_stopwatch_s, &
+<      create_watchgroup_a, create_watchgroup_s, &
+<      join_watchgroup_a, join_watchgroup_s, &
+<      leave_watchgroup_a, leave_watchgroup_s, &
+<      which_clocks, which_clocks_a, which_clocks_s, &
+<      create_watch_actual, destroy_watch_actual, start_watch_actual, stop_watch_actual, &
+<      reset_watch_actual, pause_watch_actual, end_pause_watch_actual, &
+<      read_watch_actual, print_watch_actual, create_watchgroup_actual, &
+<      join_watchgroup_actual, leave_watchgroup_actual, &
+<      cpu_second, &
+<      err_handler_watch, print_time, free_watch_list
+---
+> ! EPC compiler complained at the generic interface when the routines were listed
+> ! in this private statement (which is required by F)
+> !private :: create_watch_aa, create_watch_as, create_watch_sa, create_watch_ss, &
+> !     destroy_watch_aa, destroy_watch_as, destroy_watch_sa, destroy_watch_ss, &
+> !     start_watch_aa, start_watch_as, start_watch_sa, start_watch_ss, start_watch_ga, start_watch_gs, &
+> !     stop_watch_aa, stop_watch_as, stop_watch_sa, stop_watch_ss, stop_watch_ga, stop_watch_gs, &
+> !     reset_watch_aa, reset_watch_as, reset_watch_sa, reset_watch_ss, reset_watch_ga, reset_watch_gs, &
+> !     pause_watch_aa, pause_watch_as, pause_watch_sa, pause_watch_ss, pause_watch_ga, pause_watch_gs, &
+> !     end_pause_watch_aa, end_pause_watch_as, end_pause_watch_sa, end_pause_watch_ss, &
+> !     end_pause_watch_ga, end_pause_watch_gs, &
+> !     read_watch_aa, read_watch_as, read_watch_sa, read_watch_ss, &
+> !     read_watch_ax, read_watch_sx, &
+> !     print_watch_aa, print_watch_as, print_watch_sa, print_watch_ss, print_watch_ga, print_watch_gs, &
+> !     option_stopwatch_a, option_stopwatch_s, &
+> !     create_watchgroup_a, create_watchgroup_s, &
+> !     join_watchgroup_a, join_watchgroup_s, &
+> !     leave_watchgroup_a, leave_watchgroup_s, &
+> !     which_clocks, which_clocks_a, which_clocks_s, &
+> !     create_watch_actual, destroy_watch_actual, start_watch_actual, stop_watch_actual, &
+> !     reset_watch_actual, pause_watch_actual, end_pause_watch_actual, &
+> !     read_watch_actual, print_watch_actual, create_watchgroup_actual, &
+> !     join_watchgroup_actual, leave_watchgroup_actual, &
+> !     cpu_second, &
+> !     err_handler_watch, print_time, free_watch_list

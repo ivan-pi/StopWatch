@@ -1,0 +1,87 @@
+#                    StopWatch Version 1.0
+#
+# This makefile has been tested on
+#   computer: 80486DX-50
+#         OS: Linux 1.2.13 (Slackware ?.?)
+#   compiler: Imagine1/NAG F Compiler, Release 96
+#
+# To compile one of the example programs, type
+#  make -f mf.linuxelf.f.c2 target
+# where target is the name of the example (simple, advanced, testsw,
+# overhead, errors, or bomb).
+
+F90 = F
+FFLAGS =
+CC = gcc
+CFLAGS = -O2
+
+stopwatch.o: stopwatch.F cpu_sec.mod
+	$(F90) $(FFLAGS) -c stopwatch.F
+
+stopwatch.F: stopwatch.f90
+	patch -o stopwatch.F stopwatch.f90 stopwatch.Fdiff
+
+cpu_sec.mod: cpustub.F
+	$(F90) $(FFLAGS) -c cpustub.F
+
+cpusec.o: cpusec.c2.c
+	$(CC) $(CFLAGS) -o cpusec.o -c cpusec.c2.c
+
+simple: simple.o stopwatch.o cpusec.o
+	$(F90) $(FFLAGS) -o simple cpusec.o simple.o stopwatch.o
+
+simple.o: simple.F stopwatch.o
+	$(F90) $(FFLAGS) -c simple.F
+
+simple.F: simple.f90
+	patch -o simple.F simple.f90 simple.Fdiff
+
+advanced: advanced.o stopwatch.o cpusec.o
+	$(F90) $(FFLAGS) -o advanced cpusec.o advanced.o stopwatch.o
+
+advanced.o: advanced.F stopwatch.o
+	$(F90) $(FFLAGS) -c advanced.F
+
+advanced.F: advanced.f90
+	patch -o advanced.F advanced.f90 advanced.Fdiff
+
+overhead: overhead.o stopwatch.o cpusec.o
+	$(F90) $(FFLAGS) -o overhead cpusec.o overhead.o stopwatch.o
+
+overhead.o: overhead.F stopwatch.o
+	$(F90) $(FFLAGS) -c overhead.F
+
+overhead.F: overhead.f90
+	patch -o overhead.F overhead.f90 overhead.Fdiff
+
+testsw: testsw.o stopwatch.o cpusec.o
+	$(F90) $(FFLAGS) -o testsw cpusec.o testsw.o stopwatch.o
+
+testsw.o: testsw.F stopwatch.o
+	$(F90) $(FFLAGS) -c testsw.F
+
+testsw.F: testsw.f90
+	patch -o testsw.F testsw.f90 testsw.Fdiff
+
+errors: errors.o stopwatch.o cpusec.o
+	$(F90) $(FFLAGS) -o errors cpusec.o errors.o stopwatch.o
+
+errors.o: errors.F stopwatch.o
+	$(F90) $(FFLAGS) -c errors.F
+
+errors.F: errors.f90
+	patch -o errors.F errors.f90 errors.Fdiff
+
+bomb: bomb.o stopwatch.o cpusec.o
+	$(F90) $(FFLAGS) -o bomb cpusec.o bomb.o stopwatch.o
+
+bomb.o: bomb.F stopwatch.o
+	$(F90) $(FFLAGS) -c bomb.F
+
+bomb.F: bomb.f90
+	patch -o bomb.F bomb.f90 bomb.Fdiff
+
+clean:
+	rm -f *.o *.mod simple advanced overhead testsw errors bomb \
+              testsw.output testsw.errout errors.output errors.errout F.err
+	rm -f -R f_files

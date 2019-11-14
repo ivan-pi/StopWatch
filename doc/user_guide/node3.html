@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> Quick Start</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" Quick Start">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html99 HREF="node4.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html97 HREF="user_guide.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html91 HREF="node2.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html101 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html100 HREF="node4.html"> Obtaining and Compiling </A>
+<B>Up:</B> <A NAME=tex2html98 HREF="user_guide.html"> StopWatch  User's Guide </A>
+<B> Previous:</B> <A NAME=tex2html92 HREF="node2.html"> Introduction</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION00300000000000000000> Quick Start</A></H1>
+<P>
+This section
+provides just enough information to start using the basic features
+of StopWatch .  If you run into trouble or want to learn about the advanced
+features, read the rest of the StopWatch  User's Guide and the man pages.
+<P>
+<DL COMPACT><DT>1.
+<DD> Select a <i> makefile</i> that matches the configuration of your
+system.  The makefile names are of the form <i> mf.<b>&lt;</b>os<b>&gt;</b>.<b>&lt;</b>compiler<b>&gt;</b>.<b>&lt;</b>cpusec<b>&gt;</b></i>
+where <i> <b>&lt;</b>os<b>&gt;</b></i> is the operating system, <i> <b>&lt;</b>compiler<b>&gt;</b></i> is the Fortran 90
+compiler, and <i> <b>&lt;</b>cpusec<b>&gt;</b></i> is the form of subroutine <b> cpu_second</b>.
+If you don't find your system, select a <i> makefile</i> for a similar
+system and modify it.  The <i> makefile</i> contains examples of how to
+compile your program along with StopWatch .
+<P>
+<DT>2.
+<DD> Using an example program as a model (for example, ``simple''),
+modify the <i> makefile</i> to compile your program.
+<P>
+<DT>3.
+<DD> In each program unit that calls a StopWatch  subroutine, insert
+the statement
+<PRE>      use stopwatch
+</PRE>
+<P>
+<DT>4.
+<DD> Declare one or more variables to be of type <tt> watchtype</tt>, for example
+<PRE>      type (watchtype) w
+</PRE>
+<P>
+<DT>5.
+<DD> Instrument your code as appropriate with subroutine calls:
+<PRE>      call create_watch(w)
+      call start_watch(w)
+      call stop_watch(w)
+      call reset_watch(w)
+      call print_watch(w)
+      call read_watch(val,w,s)
+      call destroy_watch(w)
+</PRE>
+where <i> s</i> in <b> read_watch</b>  is one of the character strings 'cpu',
+'user', 'sys', or 'wall', depending on what clock you want to read, and
+<i> val</i> is a real variable (of default kind) in which the clock value is
+returned.
+<P>
+ </DL><BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

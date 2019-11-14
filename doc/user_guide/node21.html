@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> join_watchgroup</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" join_watchgroup">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html312 HREF="node22.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html310 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html304 HREF="node20.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html314 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html313 HREF="node22.html"> leave_watchgroup</A>
+<B>Up:</B> <A NAME=tex2html311 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html305 HREF="node20.html"> inquiry_stopwatch</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION001070000000000000000> join_watchgroup</A></H1>
+<P>
+JOIN_WATCHGROUP <BR>  <BR>
+<P>
+adds a StopWatch
+  watch to a watch group <BR>
+<P>
+<b> SYNOPSIS</b> <BR> 
+subroutine <b> join_watchgroup</b><i> (watch, handle, err)</i>
+<P>
+<BR>
+<DL COMPACT><DT>
+<DD> type (watchtype), intent(IN) :: watch
+<DT>OR
+<DD> type (watchtype), intent(IN) :: watch(:)
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> type (watchgroup), intent(INOUT) :: handle
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> integer, optional, intent(OUT) :: err
+<P>
+ </DL>
+<P>
+<b> DESCRIPTION</b> <BR> 
+Adds the specified watch(es) to the specified watch group.  The watch(es) and
+group must have been previously created with <b> create_watch</b>
+ and
+<b> create_watchgroup.</b>
+<P>
+One or more watches must be specified.  The argument <i> watch</i>
+ can be
+a single variable of type <i> watchtype</i>
+ (see <b> stopwatch</b>(3))
+ to add one
+watch, an array of type <i> watchtype</i>
+ to add several watches.
+<P>
+The watch group is specified by
+<i> handle,</i>
+ a variable of type <i> watchgroup.</i>
+<P>
+<b> DIAGNOSTICS</b> <BR> 
+If present, the optional intent OUT integer argument <i> err</i>
+ returns
+a status code.  The code is the sum of the values listed below.
+<P>
+An error message will be printed to a specified I/O unit (unit 6
+by default) if <i> print_errors</i>
+ is TRUE (default is TRUE).
+The error message contains
+more detail about the cause of the error than can be obtained from just the
+status code, so you should set <i> print_errors</i>
+ to TRUE if you have
+trouble determining the cause of the error.
+<P>
+If <i> abort_errors</i>
+ is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will continue execution
+but the watch(es) will not be added to the group.
+<P>
+See <b> option_stopwatch</b>(3)
+ for further
+information on <i> print_errors, abort_errors</i>
+ and I/O units.
+<P>
+The relevant status codes and messages are:
+<DL COMPACT><DT>0
+<DD> No errors; execution successful.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>1
+<DD> 
+Watch needs to be created.
+This error occurs if you attempt to add a watch that has been destroyed to
+a group.
+The watch must first be created again.  See also the comment about watches
+that have never been created in the BUGS section.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>512
+<DD> 
+Failed to allocate required memory.
+Memory is allocated in the group when a watch is added.  Also,
+when <b> join_watchgroup</b>
+ is called with an array or group of watches, temporary
+memory is allocated.  This error occurs if the Fortran
+<b> allocate</b>
+ statement returns a
+nonzero status indicating that memory could not be allocated.  Avoid memory
+leaks by always destroying watches and groups before recreating them, and
+destroying local variable watches and groups before returning from a
+subroutine.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>1024
+<DD> 
+Error occurred while deallocating memory.
+This error occurs if the Fortran <b> deallocate</b>
+ statement returns a nonzero status while
+deallocating temporary memory used for an array or group of watches.  The
+watches are added to the group, but be aware that other problems could develop as a
+result of the deallocate error.
+<P>
+ </DL>
+<P>
+<b> EXAMPLES</b> <BR> 
+<tt> type (watchtype) w1, w2(3)</tt> <BR>
+<tt> type (watchgroup) g1</tt> <BR>
+<tt> integer errcode</tt> <BR> 
+<P>
+<tt> call join_watchgroup(w1, g1)</tt> <BR>
+<P>
+<tt> call join_watchgroup(w2, g1, errcode)</tt>
+<P>
+The first call adds the watch <i> w1</i>
+ to watch group <i> g1.</i>
+<P>
+The second call adds three watch to <i> g1</i>
+ and returns a status code.
+<P>
+<b> BUGS</b> <BR> 
+It cannot be determined whether or not a watch variable or
+watch group has been created (passed
+as an argument to <b> create_watch</b>
+ or <b> create_watchgroup</b>).
+  If
+a watch or watch group that has never been created
+is passed into <b> join_watchgroup,</b>
+ it might
+generate a Fortran error due to passing a pointer with undefined association
+status to the Fortran intrinsic function <b> associated.</b>
+  However, some compilers
+will allow this as an extension to the Fortran 90 standard and recognize that
+the pointer is not associated, in which case the ``Watch needs to be created''
+error message is generated.
+<P>
+ <BR> <HR><A NAME=tex2html312 HREF="node22.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html310 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html304 HREF="node20.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html314 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html313 HREF="node22.html"> leave_watchgroup</A>
+<B>Up:</B> <A NAME=tex2html311 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html305 HREF="node20.html"> inquiry_stopwatch</A>
+<BR> <HR> <P>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

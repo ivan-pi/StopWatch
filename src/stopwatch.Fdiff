@@ -1,0 +1,27 @@
+32c32,34
+< implicit none
+---
+> ! the implicit none will be reinserted after the next version of F
+> use cpu_sec ! this will go away when F allows interface blocks in Linux
+> private
+59d60
+<      cpu_second, &
+147c148,149
+< interface
+---
+> ! this will be reinserted when F allows interface blocks
+> !interface
+149,152c151,154
+<    subroutine cpu_second(cpu,user,sys)
+<    implicit none
+<    real, intent(out) :: cpu, user, sys
+<    end subroutine cpu_second
+---
+> !   subroutine cpu_second(cpu,user,sys)
+> !   implicit none
+> !   real, intent(out) :: cpu, user, sys
+> !   end subroutine cpu_second
+154c156
+< end interface
+---
+> !end interface

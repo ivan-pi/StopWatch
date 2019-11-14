@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> create_watchgroup</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" create_watchgroup">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html246 HREF="node16.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html244 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html238 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html248 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html247 HREF="node16.html"> create_watch</A>
+<B>Up:</B> <A NAME=tex2html245 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html239 HREF="node14.html"> Reference Manual</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION001010000000000000000> create_watchgroup</A></H1>
+<P>
+CREATE_WATCHGROUP <BR>  <BR>
+<P>
+creates a StopWatch
+  watch group <BR>
+<P>
+<b> SYNOPSIS</b> <BR> 
+subroutine <b> create_watchgroup</b><i> (watch, handle, err)</i>
+<P>
+<BR>
+<DL COMPACT><DT>
+<DD> type (watchtype), intent(IN) :: watch
+<DT>OR
+<DD> type (watchtype), intent(IN) :: watch(:)
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> type (watchgroup), intent(OUT) :: handle
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> integer, optional, intent(OUT) :: err
+<P>
+ </DL>
+<P>
+<b> DESCRIPTION</b> <BR> 
+Creates a new watch group and returns a handle for it.  A watch group must
+be created by this routine before it is passed to any other
+StopWatch
+  routines.  In Fortran 90 it is
+impossible to test whether or not a watch group has been created, and using a
+watch group that has not been created may cause the program to crash.  It is not
+an error to create a watch group that has already been created, however the prior
+information <em> and memory locations</em> will be lost.  Watch groups should be
+destroyed (see <b> destroy_watchgroup</b>(3))
+ before they are recreated.
+Also,
+local variable watch groups should be destroyed before returning from a subroutine,
+to avoid memory leaks.
+<P>
+One or more watches may be optionally specified.  If <i> watch</i>
+ is present,
+the watch group will initially contain the specified watch(es).
+If <i> watch</i>
+ is omitted, the watch group will initially be empty.  Watches
+can be added and removed from the group with <b> join_watchgroup</b>
+ and
+<b> leave_watchgroup.</b>
+<P>
+The argument <i> watch</i>
+ can be
+a single variable of type <i> watchtype</i>
+ (see <b> stopwatch</b>(3))
+ to start
+the group with one watch, or 
+an array of type <i> watchtype</i>
+ to start the group with several watches.
+<P>
+The argument <i> handle</i>
+ is a variable of type <i> watchgroup</i>
+ that
+will subsequently be used to access the watch group.
+<P>
+<b> DIAGNOSTICS</b> <BR> 
+If present, the optional intent OUT integer argument <i> err</i>
+ returns
+a status code.  The code is the sum of the values listed below.
+<P>
+An error message will be printed to a specified I/O unit (unit 6
+by default) if <i> print_errors</i>
+ is TRUE (default is TRUE).
+The error message contains
+more detail about the cause of the error than can be obtained from just the
+status code, so you should set <i> print_errors</i>
+ to TRUE if you have
+trouble determining the cause of the error.
+<P>
+If <i> abort_errors</i>
+ is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will continue execution
+but the watch group will not be created.
+<P>
+See <b> option_stopwatch</b>(3)
+ for further
+information on <i> print_errors, abort_errors</i>
+ and I/O units.
+<P>
+The relevant status codes and messages are:
+<DL COMPACT><DT>0
+<DD> No errors; execution successful.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>1
+<DD> 
+Watch needs to be created.
+This error occurs if you attempt to put a watch that has been destroyed in
+the group.
+The watch must first be created again.  See also the comment about watches
+that have never been created in the BUGS section.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>512
+<DD> 
+Failed to allocate required memory.
+When a group is created, memory is allocated for the group.  Also,
+when <b> create_watchgroup</b>
+ is called with an array of watches, temporary
+memory is allocated.  This error occurs if the Fortran
+<b> allocate</b>
+ statement returns a
+nonzero status indicating that memory could not be allocated.  Avoid memory
+leaks by always destroying watches and groups before recreating them, and
+destroying local variable watches and groups before returning from a
+subroutine.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>1024
+<DD> 
+Error occurred while deallocating memory.
+This error occurs if the Fortran <b> deallocate</b>
+ statement returns a nonzero status while
+deallocating temporary memory used for an array of watches.  The
+group is created, but be aware that other problems could develop as a
+result of the deallocate error.
+<P>
+ </DL>
+<P>
+<b> EXAMPLES</b> <BR> 
+<tt> type (watchtype) w(3)</tt> <BR>
+<tt> type (watchgroup) g1, g2</tt> <BR>
+<tt> integer errcode</tt> <BR> 
+<P>
+<tt> call create_watchgroup(handle=g1)</tt> <BR>
+<P>
+<tt> call create_watchgroup(w, g2, err=errcode)</tt>
+<P>
+The first call creates an empty group <i> g1.</i>
+  The second call creates
+the group <i> g2</i>
+ with three watches, and returns a status code.
+<P>
+<b> BUGS</b> <BR> 
+It cannot be determined whether or not a watch variable
+has been created (passed
+as an argument to <b> create_watch).</b>
+  If
+a watch that has never been created
+is passed into <b> create_watchgroup,</b>
+ it might
+generate a Fortran error due to passing a pointer with undefined association
+status to the Fortran intrinsic function <b> associated.</b>
+  However, some compilers
+will allow this as an extension to the Fortran 90 standard and recognize that
+the pointer is not associated, in which case the ``Watch needs to be created''
+error message is generated.
+<P>
+ <BR> <HR><A NAME=tex2html246 HREF="node16.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html244 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html238 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html248 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html247 HREF="node16.html"> create_watch</A>
+<B>Up:</B> <A NAME=tex2html245 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html239 HREF="node14.html"> Reference Manual</A>
+<BR> <HR> <P>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

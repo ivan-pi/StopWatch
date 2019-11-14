@@ -1,0 +1,26 @@
+Version 1.0 January 1997
+
+ Changes that are not upwardly compatible:
+  o read_watch changed to a subroutine, instead of a function
+  o names of the *_group routines (create, destroy, join and leave) changed
+    to *_watchgroup
+  o sequence removed from type definitions (may effect codes with a watch or
+    watchgroup in common or equivalence on some compilers)
+
+ New features:
+  o print format specification (sec, hh:mm:ss or [[hh:]mm:]ss) added to
+    print_watch, option_stopwatch and inquiry_stopwatch
+  o many internal syntax changes to support F and Elf90 subset languages
+  o cpu_second based on Fortran 95 intrinsic cpu_time added
+  o makefiles for several more environments
+
+ Incidental:
+  o a few bug fixes and compiler bug workarounds
+  o makefiles renamed mf.<os>.<cpusec>.<compiler>
+  o blank line not printed in print_watch when title or watch%name is empty
+  o cpu_second routines changed to free format when possible
+  o example program 'crash' renamed to 'bomb' (crash is a unix command)
+
+-----------
+Version 0.8 June 1995
+  The original (beta) release

@@ -1,0 +1,177 @@
+.TH INQUIRY_STOPWATCH 3 "January 3, 1997" "StopWatch 1.0" "STOPWATCH PROCEDURES"
+.PD 0.0v
+
+
+.SH NAME
+inquiry_stopwatch - returns StopWatch options and system
+dependent values
+
+.SH SYNOPSIS
+subroutine
+.BI "inquiry_stopwatch" "(default_clock, io_unit_print, io_unit_error, print_errors, abort_errors, print_form, cpu_avail, user_avail, sys_avail, wall_avail, cpu_prec, wall_prec, version, err)"
+
+
+.IP
+character(len=*), optional, intent(OUT) ::
+default_clock(4)
+.IP
+integer, optional, intent(OUT) ::  io_unit_print,
+io_unit_err
+.IP
+logical, optional, intent(OUT) ::  print_errors,
+abort_errors
+.IP
+character(len=*), optional, intent(OUT) ::  print_form
+.IP
+logical, optional, intent(OUT) ::  cpu_avail,
+user_avail, sys_avail, wall_avail
+.IP
+real, optional, intent(OUT) ::  cpu_prec, wall_prec
+.IP
+character(len=16), optional, intent(OUT) ::  version
+.IP
+integer, optional, intent(OUT) ::  err
+
+
+.SH DESCRIPTION
+Returns the value of StopWatch options and other system
+and implementation dependent values.  All arguments are
+optional and have intent OUT.
+The following arguments can be set by
+.BR "option_stopwatch" "."
+See
+.BR "option_stopwatch" "(3)"
+for further details on their meaning.
+.I default_clock
+is the set of clocks that are used when the
+.I clock
+argument is omitted in a call to a StopWatch routine.
+.I io_unit_print
+returns the unit for output from subroutine
+.BI "print_watch." " io_unit_error"
+returns the unit for any error messages printed by
+StopWatch.  If
+.I print_errors
+is TRUE, then an error message will be printed to
+.I io_unit_error
+whenever an error condition occurs.  If
+.I abort_errors
+is TRUE, then the program will terminate when an error
+condition occurs.
+.I print_form
+is the format used by
+.BR "print_watch" "(3)"
+when the
+.I form
+argument is omitted.
+
+The remaining arguments return system information that
+can not be changed.
+
+Since an interface to the CPU clock is not part of the
+Fortran 90 standard, the availability of clocks and
+clock precisions are implementation dependent.  Not all
+clocks are available in all implementations.  The
+logical arguments
+.I cpu_avail, user_avail, sys_avail
+and
+.I wall_avail
+return TRUE if the respective clock is available in
+this implementation.
+
+The precision (the shortest time interval that can be
+measured) of the clocks also varies between
+implementations.  The real variables
+.I cpu_prec
+and
+.I wall_prec
+return the precision of the CPU and wall clocks, in
+seconds.  It is assumed that the user and sys clocks
+have the same precision as the CPU clock.  If the CPU
+clock is not available, then
+.I cpu_prec
+will return 0., and similar for the wall clock.
+
+The character string
+.I version
+returns the version number of StopWatch.
+
+.SH DIAGNOSTICS
+If present, the optional intent OUT integer argument
+.I err
+returns a status code.  The code is the sum of the
+values listed below.
+
+An error message will be printed to a specified I/O
+unit (unit 6 by default) if
+.I print_errors
+is TRUE (default is TRUE). The error message contains
+more detail about the cause of the error than can be
+obtained from just the status code, so you should set
+.I print_errors
+to TRUE if you have trouble determining the cause of
+the error.
+
+If
+.I abort_errors
+is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will
+continue execution but the requested value(s) might not
+be returned.
+
+See
+.BR "option_stopwatch" "(3)"
+for further information on
+.I print_errors, abort_errors
+and I/O units.
+
+The relevant status codes and messages are:
+
+
+.IP 0
+No errors; execution successful.
+
+
+.IP 512
+Failed to allocate required memory.  This error occurs
+if the Fortran
+.B allocate
+statement returns a nonzero status indicating that
+memory could not be allocated.  Avoid memory leaks by
+always destroying watches and groups before recreating
+them, and destroying local variable watches and groups
+before returning from a subroutine.
+
+
+.LP
+
+.SH EXAMPLES
+logical user_is_there
+.br
+real cpu_prec
+
+call inquiry_stopwatch(user_avail=user_is_there)
+.br
+call inquiry_stopwatch(cpu_prec=cpu_prec)
+
+The first call determines if the user clock is
+available in this implementation.  The second call
+determines the shortest time that can be measured by
+the CPU clock.
+
+.SH BUGS
+None known.
+
+.SH AUTHOR
+William F. Mitchell, william.mitchell@nist.gov
+.br
+National Institute of Standards and Technology
+
+
+.SH SEE ALSO
+stopwatch(3), create_watchgroup(3), create_watch(3),
+destroy_watchgroup(3), destroy_watch(3),
+end_pause_watch(3), join_watchgroup(3),
+leave_watchgroup(3), option_stopwatch(3),
+pause_watch(3), print_watch(3), read_watch(3),
+reset_watch(3), start_watch(3), stop_watch(3)

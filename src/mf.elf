@@ -1,0 +1,11 @@
+# Not exactly a makefile, this is an Elf90 'command file'.
+# It illustrates how to compile the program 'simple'.
+# Rename cpusec.nil.f90 to cpunil.f90 and stopwatch.f90 to stopwatc.f90
+# From the command line, enter 'elf90 @mf.elf'
+#
+# Tested on
+#   computer: Pentium Pro
+#         OS: Windows NT Version 3.51
+#   compiler: Lahey Elf90 Version 2.00c
+#
+cpunil.f90 stopwatc.f90 simple.f90 -exe simple

@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> inquiry_stopwatch</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" inquiry_stopwatch">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html301 HREF="node21.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html299 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html293 HREF="node19.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html303 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html302 HREF="node21.html"> join_watchgroup</A>
+<B>Up:</B> <A NAME=tex2html300 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html294 HREF="node19.html"> end_pause_watch</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION001060000000000000000> inquiry_stopwatch</A></H1>
+<P>
+INQUIRY_STOPWATCH <BR>  <BR>
+<P>
+returns StopWatch
+  options and system dependent values <BR>
+<P>
+<b> SYNOPSIS</b> <BR> 
+subroutine <b> inquiry_stopwatch</b><i> (default_clock, io_unit_print, io_unit_error,
+print_errors, abort_errors, print_form, cpu_avail, user_avail, sys_avail, wall_avail,
+cpu_prec, wall_prec, version, err)</i>
+<P>
+<BR>
+<DL COMPACT><DT>
+<DD> character(len=*), optional, intent(OUT) :: default_clock(4)
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> integer, optional, intent(OUT) :: io_unit_print, io_unit_err
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> logical, optional, intent(OUT) :: print_errors, abort_errors
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> character(len=*), optional, intent(OUT) :: print_form
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> logical, optional, intent(OUT) :: cpu_avail, user_avail, sys_avail,
+wall_avail
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> real, optional, intent(OUT) :: cpu_prec, wall_prec
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> character(len=16), optional, intent(OUT) :: version
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> integer, optional, intent(OUT) :: err
+<P>
+ </DL>
+<P>
+<b> DESCRIPTION</b> <BR> 
+Returns the value of StopWatch
+  options and other system and implementation
+dependent values.  All arguments are
+optional and have intent OUT.
+<P>
+The following arguments can be set by <b> option_stopwatch</b>.
+  See
+<b> option_stopwatch</b>(3)
+ for further details on their meaning.
+<i> default_clock</i>
+ is the set of clocks that are used when
+the <i> clock</i>
+ argument is omitted in a call to a StopWatch
+  routine.
+<i> io_unit_print</i>
+ returns the unit for output from subroutine
+<b> print_watch.</b><i> io_unit_error</i>
+ returns the unit for any
+error messages printed by StopWatch
+ .
+If <i> print_errors</i>
+ is
+TRUE, then an error message will be printed to
+<i> io_unit_error</i>
+ whenever an error condition occurs.
+If <i> abort_errors</i>
+ is TRUE,
+then the program will terminate when an error condition occurs.
+<i> print_form</i>
+ is the format used by <b> print_watch</b>(3)
+ when the
+<i> form</i>
+ argument is omitted.
+<P>
+The remaining arguments return system information that can not be changed.
+<P>
+Since an interface to the CPU clock is not part of the Fortran 90 standard,
+the availability of clocks and clock precisions are implementation
+dependent.  Not all clocks are available in all implementations.  The logical
+arguments <i> cpu_avail, user_avail, sys_avail</i>
+ and
+<i> wall_avail</i>
+ return
+TRUE if the respective clock is available in this implementation.
+<P>
+The precision (the shortest time interval that can be measured) of the clocks
+also varies between implementations.  The
+real variables <i> cpu_prec</i>
+ and <i> wall_prec</i>
+ return the precision
+of the CPU and wall clocks, in seconds.  It is assumed that the user and sys
+clocks have the same precision as the CPU clock.  If the CPU clock is not
+available, then <i> cpu_prec</i>
+ will return 0., and similar for the wall
+clock.
+<P>
+The character string <i> version</i>
+ returns the version number of
+StopWatch
+ .
+<P>
+<b> DIAGNOSTICS</b> <BR> 
+If present, the optional intent OUT integer argument <i> err</i>
+ returns
+a status code.  The code is the sum of the values listed below.
+<P>
+An error message will be printed to a specified I/O unit (unit 6
+by default) if <i> print_errors</i>
+ is TRUE (default is TRUE).
+The error message contains
+more detail about the cause of the error than can be obtained from just the
+status code, so you should set <i> print_errors</i>
+ to TRUE if you have
+trouble determining the cause of the error.
+<P>
+If <i> abort_errors</i>
+ is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will continue execution
+but the requested value(s) might not be returned.
+<P>
+See <b> option_stopwatch</b>(3)
+ for further
+information on <i> print_errors, abort_errors</i>
+ and I/O units.
+<P>
+The relevant status codes and messages are:
+<DL COMPACT><DT>0
+<DD> No errors; execution successful.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>512
+<DD> 
+Failed to allocate required memory.
+This error occurs if the Fortran <b> allocate</b>
+ statement returns a
+nonzero status indicating that memory could not be allocated.  Avoid memory
+leaks by always destroying watches and groups before recreating them, and
+destroying local variable watches and groups before returning from a
+subroutine.
+<P>
+ </DL>
+<P>
+<b> EXAMPLES</b> <BR> 
+<tt> logical user_is_there</tt> <BR>
+<tt> real cpu_prec</tt> <BR> 
+<P>
+<tt> call inquiry_stopwatch(user_avail=user_is_there)</tt> <BR>
+<P>
+<tt> call inquiry_stopwatch(cpu_prec=cpu_prec)</tt>
+<P>
+The first call determines if the user clock is available in this implementation.
+The second call determines the shortest time that can be measured by
+the CPU clock.
+<P>
+<b> BUGS</b> <BR> 
+None known.
+<P>
+ <BR> <HR><A NAME=tex2html301 HREF="node21.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html299 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html293 HREF="node19.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html303 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html302 HREF="node21.html"> join_watchgroup</A>
+<B>Up:</B> <A NAME=tex2html300 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html294 HREF="node19.html"> end_pause_watch</A>
+<BR> <HR> <P>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

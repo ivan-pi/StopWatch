@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> option_stopwatch</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" option_stopwatch">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html334 HREF="node24.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html332 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html326 HREF="node22.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html336 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html335 HREF="node24.html"> pause_watch</A>
+<B>Up:</B> <A NAME=tex2html333 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html327 HREF="node22.html"> leave_watchgroup</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION001090000000000000000> option_stopwatch</A></H1>
+<P>
+OPTION_STOPWATCH <BR>  <BR>
+<P>
+sets StopWatch
+  options <BR>
+<P>
+<b> SYNOPSIS</b> <BR> 
+subroutine <b> option_stopwatch</b><i> (default_clock, io_unit_print, io_unit_error,
+print_errors, abort_errors, print_form, err)</i>
+<P>
+<BR>
+<DL COMPACT><DT>
+<DD> character(len=*), optional, intent(IN) :: default_clock(:)
+<DT>OR
+<DD> character(len=*), optional, intent(IN) :: default_clock
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> integer, optional, intent(IN) :: io_unit_print, io_unit_err
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> logical, optional, intent(IN) :: print_errors, abort_errors
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> character(len=*), optional, intent(IN) :: print_form
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>
+<DD> integer, optional, intent(OUT) :: err
+<P>
+ </DL>
+<P>
+<b> DESCRIPTION</b> <BR> 
+Sets options that control the behavior of StopWatch
+ .  All arguments are
+optional and have intent IN (except the status code <i> err</i>
+ which has
+intent OUT).  These options are global in nature, and remain in effect until
+another call to <b> option_stopwatch</b>
+ changes them.
+<P>
+The argument
+<i> default_clock</i>
+ determines what clocks will be used for all subsequent
+operations in which the <i> clock</i>
+ argument is omitted.  This allows you
+to specify what clocks you are interested in once and for all, and not have
+to specify those clocks with every subroutine call.  The initial default
+value is (/'cpu ', 'user', 'sys ', 'wall'/), i.e., all clocks.  However, if
+any clocks are not available in the implementation, they will be automatically
+removed from the list of default clocks.
+<P>
+Printed output can be redirected to any valid I/O unit number.
+<i> io_unit_print</i>
+ determines the unit for output from subroutine
+<b> print_watch.</b><i> io_unit_error</i>
+ determines the unit for any
+error messages printed by StopWatch
+ .  When an I/O unit is reset by one
+of these variables, the unit must already be open for writing.  The initial
+default is 6 for both I/O units, which is standard output on many systems.
+<P>
+What to do when an error occurs is controlled by the two logical variables
+<i> print_errors</i>
+ and <i> abort_errors.</i>
+  If <i> print_errors</i>
+ is
+TRUE, then an error message will be printed to <i> io_unit_error</i>
+ whenever
+an error condition occurs.  In all cases where an error can be
+detected, the program can continue to execute, although the behavior of
+StopWatch
+  might not be as expected.  If <i> abort_errors</i>
+ is TRUE,
+then the program will terminate when an error condition occurs.  The initial
+defaults are TRUE for <i> print_errors</i>
+ and FALSE for
+<i> abort_errors.</i>
+<P>
+The argument
+<i> print_form</i>
+ determines the form for printing time when <i> form</i>
+<P>
+is omitted in <i> print_errors</i>
+.  The valid values are:
+<DL COMPACT><DT>'sec',
+<DD> seconds
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>'hh:mm:ss',
+<DD> colon separated hours, minutes and seconds
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>'[[hh:]mm:]ss',
+<DD> same as 'hh:mm:ss' except hours and minutes are printed only if nonzero
+<P>
+ </DL>
+<P>
+The default value is 'sec'.
+<P>
+<b> DIAGNOSTICS</b> <BR> 
+If present, the optional intent OUT integer argument <i> err</i>
+ returns
+a status code.  The code is the sum of the values listed below.
+<P>
+The relevant status codes and messages are:
+<DL COMPACT><DT>0
+<DD> No errors; execution successful.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>8
+<DD> 
+Invalid clock type.
+This occurs if <i> default_clock</i>
+ is present and one of the specified clocks
+is not supported by the implementation.
+See <b> inquiry_stopwatch</b>(3)
+ to determine what clocks are
+available.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>16
+<DD> 
+Too many clocks specified.
+This occurs when the
+argument <i> default_clock</i>
+ is an array longer than four.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>256
+<DD> 
+I/O unit is not open for writing.
+The I/O unit requested for <i> io_unit_print</i>
+ or
+<i> io_unit_error</i>
+ is not open for writing.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>512
+<DD> 
+Failed to allocate required memory.
+This error occurs if the Fortran <b> allocate</b>
+ statement returns a
+nonzero status indicating that memory could not be allocated.  Avoid memory
+leaks by always destroying watches and groups before recreating them, and
+destroying local variable watches and groups before returning from a
+subroutine.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>1024
+<DD> 
+Error occurred while deallocating memory.
+This error occurs if the Fortran <b> deallocate</b>
+ statement returns a nonzero status while
+deallocating memory.  Be aware that other problems could develop as a
+result of the deallocate error.
+<P>
+ </DL>
+<P>
+<DL COMPACT><DT>2048
+<DD> 
+Illegal output form.
+This error occurs if <i> print_form</i>
+ is not one of the strings listed
+above.
+<P>
+ </DL>
+<P>
+In addition to the run time diagnostics generated by StopWatch
+ , the following
+problems may arise: <BR>
+<P>
+<DL COMPACT><DT><IMG  ALIGN=BOTTOM ALT="" SRC="img6.gif">
+<DD> 
+In Fortran 90, the character strings in an array constructor must all have the
+same length.  Pad three letter clock names with a blank on the right to make
+a four character string, for example, 'cpu '.
+<P>
+ </DL>
+<P>
+<b> EXAMPLES</b> <BR> 
+<tt> call option_stopwatch(default_clock='cpu', abort_error=.true.)</tt> <BR>
+<P>
+<tt> call option_stopwatch(io_unit_print=11, io_unit_error=12)</tt>
+<P>
+The first call sets the default clock to be the cpu clock and says to
+terminate the program if an error occurs.  The second call reassigns the
+I/O units.
+<P>
+<b> BUGS</b> <BR> 
+None known.
+<P>
+ <BR> <HR><A NAME=tex2html334 HREF="node24.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html332 HREF="node14.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html326 HREF="node22.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html336 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html335 HREF="node24.html"> pause_watch</A>
+<B>Up:</B> <A NAME=tex2html333 HREF="node14.html"> Reference Manual</A>
+<B> Previous:</B> <A NAME=tex2html327 HREF="node22.html"> leave_watchgroup</A>
+<BR> <HR> <P>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

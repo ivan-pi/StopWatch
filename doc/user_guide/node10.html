@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> Examples</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" Examples">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html178 HREF="node11.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html176 HREF="user_guide.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html170 HREF="node9.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html180 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html179 HREF="node11.html"> Trouble Shooting</A>
+<B>Up:</B> <A NAME=tex2html177 HREF="user_guide.html"> StopWatch  User's Guide </A>
+<B> Previous:</B> <A NAME=tex2html171 HREF="node9.html"> Options and System </A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION00600000000000000000> Examples</A></H1>
+<P>
+The StopWatch  distribution contains several example programs to demonstrate
+how to use StopWatch , and to test the installation.  These programs are
+located in the <tt> src</tt> directory.  Once you select or create the correct
+<i> makefile</i> you should be able to compile these examples with
+``make <em> prog</em>'' where <em> prog</em> is the name of the source file
+without the <tt>.f90</tt> extension.
+<P>
+<UL><LI> <A NAME=tex2html4 HREF="../../src/simple.f90"><i> simple.f90</i></A> -- This is a short example showing the simplest use of StopWatch .
+<P>
+<LI> <A NAME=tex2html5 HREF="../../src/advanced.f90"><i> advanced.f90</i></A> -- This example illustrates the use of some of the
+advanced features of StopWatch .
+<P>
+<LI> <A NAME=tex2html6 HREF="../../src/overhead.f90"><i> overhead.f90</i></A> -- This program prints the clock precisions, and measures
+the amount of time used by calls to StopWatch  subroutines.  As long as the
+clock precision is much larger than the overhead of a StopWatch  subroutine,
+StopWatch  should not increase the time being measured.
+<P>
+<LI> <A NAME=tex2html7 HREF="../../src/testsw.f90"><i> testsw.f90</i></A> -- This is a program that tests most of the functionality of
+StopWatch .
+<P>
+<LI> <A NAME=tex2html8 HREF="../../src/errors.f90"><i> errors.f90</i></A> -- This is a program that tests many of the error conditions
+detected by StopWatch .
+<P>
+<LI> <A NAME=tex2html9 HREF="../../src/bomb.f90"><i> bomb.f90</i></A> -- This program attempts to make StopWatch  crash by using
+a watch that has not been created.  Running this program should indicate how
+your system handles this error condition, but there is no guarantee that your
+compiler will handle the Fortran error consistently.
+<P>
+</UL><BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

@@ -1,0 +1,595 @@
+.TH STOPWATCH 3 "January 3, 1997" "StopWatch 1.0" "STOPWATCH OVERVIEW"
+.PD 0.0v
+
+
+.SH NAME
+stopwatch - package for measuring cpu and wall clock
+execution time
+
+.SH SYNOPSIS
+StopWatch is a Fortran 90 module for measuring
+execution time of program segments.  StopWatch is
+designed to be a portable, easy-to-use means of
+measuring execution time.  It supports the wall clock,
+CPU clock, a breakdown of the CPU clock into user and
+system times, and returns all times in seconds.  It
+provides a simple means of determining which clocks are
+available, and the precision of those clocks.
+
+StopWatch is used by instrumenting your code with
+subroutine calls that mimic the operation of a stop
+watch.  The primary routines are
+.B start_watch, stop_watch, reset_watch, read_watch,
+and
+.B print_watch.
+StopWatch supports multiple watches, and provides the
+concept of watch groups to allow functions to operate
+on multiple watches simultaneously.
+
+.SH DESCRIPTION
+The entities in StopWatch that have public
+accessibility are two derived types and fifteen
+subroutines (one of which is a function subroutine).
+Any program unit that references any of these entities
+must use the
+.I stopwatch
+module, i.e., must contain the statement
+
+use stopwatch
+
+The derived types are:
+
+.IP o
+
+.I watchtype
+-- used for declaring a variable to be a watch
+
+
+.IP o
+
+.I watchgroup
+-- used for declaring a variable to be a handle for a
+group of watches
+
+
+.LP
+
+These two types have public accessibility, but the
+internals of the type are private.  Any operations
+performed on a variable of one of these types must be
+performed by one of the StopWatch subroutines.
+
+This man page describes, in general terms, the
+operations that can be performed by the StopWatch
+subroutines.  The formal interfaces and detailed
+descriptions of the routines can be found in the
+individual man pages.
+
+A watch is a variable declared to be of type
+.I watchtype.
+It can be passed to subroutines as an actual argument
+or through modules like any Fortran variable, but can
+only be operated on by the StopWatch subroutines.
+Watches must be created by subroutine
+.B create_watch
+before they are used.  Attempting to use a watch that
+has not been created will generate a Fortran 90 error,
+from attempting to pass a pointer with undefined
+association status to the Fortran intrinsic function
+.B associated.
+Watches must be destroyed when no longer useful.  For
+example, consider a local variable of type
+.I watchtype
+in a subroutine.  Since the contents of a local
+variable are lost when the subroutine returns, the
+watch should be destroyed before returning to the
+calling program.  Failure to destroy watches can lead
+to a memory leak.
+
+.IP o
+
+.B create_watch
+-- creates a watch
+
+
+.IP o
+
+.B destroy_watch
+-- destroys a watch
+
+
+.LP
+
+Watches can optionally be given a name (up to 132
+characters) through an optional argument,
+.I name,
+in
+.B create_watch.
+This name is used in error messages and
+.B print_watch
+to identify the watch in the printed output.
+
+Different applications demand different definitions of
+``time''.  StopWatch supports four clocks in each
+watch, with each clock measuring a different concept of
+time.  All of them measure time in seconds.
+
+.IP o
+user -- the amount of CPU time used by the user's
+program
+
+
+.IP o
+sys -- the amount of CPU time used by the system in
+support of the user's program
+
+
+.IP o
+cpu -- the total CPU time, i.e., user+sys
+
+
+.IP o
+wall -- the wall clock time, i.e., elapsed real time
+
+
+.LP
+
+It is not required that all clocks be used.  A watch
+can be created with any combination of the four clocks.
+You can also specify a set of
+.I default clocks
+to be used whenever the clocks are not explicitly
+determined.
+
+Since Fortran 90 does not contain an intrinsic function
+for CPU time, the implementation of the cpu, sys and
+user clocks is system dependent.  Some implementations
+may support only cpu and wall, not user and sys.  Some
+implementations may support only wall.  Since the
+Fortran 90 standard requires the existence of a
+.B system_clock
+subroutine, but does not require that it provide clock
+information, it is possible that some implementations
+might not support wall.  Clock availability can be
+determined by
+.B inquiry_stopwatch.
+Unavailable clocks will automatically be removed from
+the set of default clocks, but if a clock that is not
+available is explicitly requested, a warning message
+will be generated.
+
+StopWatch supports multiple watches simultaneously.
+Often it is useful to perform the same operation on
+several watches.  This is essential for correct
+operation of
+.B pause_watch
+and
+.B end_pause_watch,
+and can also be convenient for procedures like
+.B read_watch, print_watch,
+and
+.B reset_watch.
+To facilitate this, StopWatch supports the concept of
+.I watch groups.
+When calling a StopWatch subroutine, a watch group can
+be specified instead of a watch.  The group is
+referenced by a variable of type
+.I watchgroup.
+Watch groups must be created before they are used.
+Attempting to use a watch group that has not been
+created will generate a Fortran 90 error, from
+attempting to pass a pointer with undefined association
+status to the Fortran intrinsic function
+.B associated.
+Watch groups must be destroyed when no longer useful.
+The watches themselves are not destroyed, only the
+grouping of them.  Failure to destroy watch groups can
+lead to a memory leak.
+
+.IP o
+
+.B create_watchgroup
+-- creates a new watch group
+
+
+.IP o
+
+.B destroy_watchgroup
+-- destroys a watch group (but not the watches in the
+group)
+
+
+.LP
+
+Most StopWatch subroutines take
+.I watch
+as the first dummy argument, and accept several forms
+of
+.I watch.
+The forms are:
+
+.IP o
+type (watchtype) watch -- a single watch
+
+
+.IP o
+type (watchtype) watch(:)  -- an array of watches
+
+
+.IP o
+type (watchgroup) watch -- a watch group handle
+
+
+.LP
+
+In most StopWatch routines, an array of watches can be
+specified by an array constructor in the calling
+statement, for example:
+
+type (watchtype) watch ::  w1, w2, w3
+
+call print_watch( (/w1,w2,w3/) )
+
+However, this can not be used in routines where
+.I watch
+has intent OUT or intent INOUT, because the array
+constructor is actually an expression, not a list of
+the variables.  Currently this includes the routines
+.B create_watch
+and
+.B destroy_watch.
+
+
+Most StopWatch subroutines take
+.I clock
+as the (optional) second dummy argument to determine
+which of the four clocks will be affected by the
+action.
+.I clock
+can be one of the character strings 'user', 'sys',
+\'cpu', or 'wall', or can be an array of such character
+strings to specify more than one clock.  Since
+.I clock
+is always intent IN, an array of clock types can be
+built with an array constructor.  However, note that
+Fortran 90 requires all character strings in such a
+construction to have the same length.  Thus 'sys' and
+\'cpu' should be padded with a blank, as in:
+
+call start_watch(watch, (/'user','sys ','cpu '/) )
+
+If the optional argument
+.I clock
+is omitted, the current set of default clocks is used.
+The set of default clocks is set with
+.B option_stopwatch
+and initially consists of all available clocks.
+
+A StopWatch watch is operated on by subroutine calls
+that correspond to the actions performed with a common
+stop watch.  The basic operation of a watch involves
+starting it, stopping it, and resetting it's value to
+0.
+
+.IP o
+
+.B start_watch
+-- starts an idle watch, like the Start/Stop button on
+a stop watch
+
+
+.IP o
+
+.B stop_watch
+-- stops a running watch, like the Start/Stop button on
+a stop watch
+
+
+.IP o
+
+.B reset_watch
+-- sets the clocks on a watch to 0.0, like the Reset
+button on a stop watch
+
+
+.LP
+
+Of course, running a stop watch is of little use unless
+you can see what it says.
+
+.IP o
+
+.B read_watch
+-- returns the current clock value of a watch, like
+looking at the display of a stop watch
+
+
+.IP o
+
+.B print_watch
+-- prints the current clock value of a watch to an
+output device.  To push the analogy to the limit,
+imagine a stop watch with a printer attached to it.
+
+
+.LP
+
+The routine
+.B read_watch
+is a function subroutine.  The result is either a
+scalar, array of rank one, or array of rank two
+depending on whether
+.I watch
+and
+.I clock
+are scalars or arrays.
+
+When measuring CPU time, it is often desirable to not
+include the time used by certain parts of the code,
+such as printing or graphics.  In a subroutine, you
+might not know which of the clocks are currently
+running, so you can not simply stop them before the I/O
+and start them up again after the I/O. For this,
+StopWatch provides the pause function.
+
+.IP o
+
+.B pause_watch
+-- temporarily suspend the running watches
+
+
+.IP o
+
+.B end_pause_watch
+-- resume suspended watches
+
+
+.LP
+
+Besides
+.B create_watchgroup
+and
+.B destroy_watchgroup,
+there are two operations that can be performed on
+.I watchgroup
+variables:
+
+.IP o
+
+.B join_watchgroup
+-- adds a watch to a watch group
+
+
+.IP o
+
+.B leave_watchgroup
+-- removes a watch from a watch group
+
+
+.LP
+
+Subroutines are provided to set several options within
+StopWatch, to determine the current value of these
+options, and to determine system dependent values of
+the implementation.
+
+.IP o
+
+.B option_stopwatch
+-- sets options within StopWatch.
+
+
+.IP o
+
+.B inquiry_stopwatch
+-- returns values of options and system dependent
+values
+
+
+.LP
+
+See
+.BR "option_stopwatch" "(3)"
+and
+.BR "inquiry_stopwatch" "(3)"
+for a description of the options and system dependent
+values that can be set and read.
+
+.SH DIAGNOSTICS
+All StopWatch subroutines take an optional intent OUT
+integer argument
+.I err
+which, if present, returns a status code.  The code is
+the sum of the values listed below.
+
+Errors can also be determined through printed error
+messages.  An error message will be printed to a
+specified I/O unit (unit 6 by default) if
+.I print_errors
+is TRUE (default is TRUE). The error message contains
+more detail about the cause of the error than can be
+obtained from just the status code, so you should set
+.I print_errors
+to TRUE if you have trouble determining the cause of
+the error.
+
+All errors are non-fatal.  If
+.I abort_errors
+is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will
+continue execution but the requested operation will not
+be performed.
+
+See
+.BR "option_stopwatch" "(3)"
+for further information on
+.I print_errors, abort_errors
+and I/O units.
+
+The relevant status codes and messages are:
+
+
+.IP 0
+No errors; execution successful.
+
+
+.IP 1
+Watch needs to be created.  This error occurs if you
+attempt to use a watch that has been destroyed.  The
+watch must first be created again.  See also the
+comment about watches that have never been created in
+the BUGS section.
+
+
+.IP 2
+Watch is in the wrong state for this operation.  This
+occurs when you attempt to start a watch that is
+currently running, stop a watch that is not running,
+etc.
+
+
+.IP 4
+Watch is in an unknown state.  This occurs if StopWatch
+does not recognize the state (running, stopped, etc.)
+that the watch is in.  This error should not occur, and
+indicates an internal bug in StopWatch.
+
+
+.IP 8
+Invalid clock type.  This occurs if
+.I clock
+is present and one of the specified clocks is not
+supported by the implementation.  See
+.BR "inquiry_stopwatch" "(3)"
+to determine what clocks are available.
+
+
+.IP 16
+Too many clocks specified.  This occurs when the
+argument
+.I clock
+is an array longer than four.
+
+
+.IP 32
+Number of names is not equal to number of watches.
+This occurs in
+.B create_watch
+if the array of watch names is not of the same length
+as the array of watches.
+
+
+.IP 64
+Character string too long.  This occurs when a watch
+name with more than 132 characters is passed into
+.B create_watch.
+
+
+
+.IP 128
+Watch not found in given group.  This occurs when you
+attempt to remove a watch from a group that it does not
+belong to.
+
+
+.IP 256
+I/O unit is not open for writing.  This can occur from
+.B print_watch
+or when printing an error message.
+
+
+.IP 512
+Failed to allocate required memory.  When a StopWatch
+routine is called with an array or group of watches,
+temporary memory is allocated.  This error occurs if
+the Fortran
+.B allocate
+statement returns a nonzero status indicating that
+memory could not be allocated.  Avoid memory leaks by
+always destroying watches and groups before recreating
+them, and destroying local variable watches and groups
+before returning from a subroutine.
+
+
+.IP 1024
+Error occurred while deallocating memory.  This error
+occurs if the Fortran
+.B deallocate
+statement returns a nonzero status while deallocating
+temporary memory used for an array or group of watches.
+The operation is performed, but be aware that other
+problems could develop as a result of the deallocate
+error.
+
+
+.IP 2048
+Illegal output form.  This error occurs in
+.B option_stopwatch
+or
+.B print_watch
+if the given print format is not one of the valid
+strings (see
+.BR "print_watch" "(3)"
+).
+
+
+.LP
+
+In addition to the run time diagnostics generated by
+StopWatch, the following problems may arise:
+
+
+.IP o
+In Fortran 90, the character strings in an array
+constructor must all have the same length.  Pad three
+letter clock names with a blank on the right to make a
+four character string, for example, 'cpu ', and pad
+watch names so they all have the same length (within an
+array constructor).
+
+
+.IP o
+In
+.B create_watch
+and
+.BI "destroy_watch," " watch"
+has intent OUT or INOUT, so you cannot use an array
+constructor as an actual argument to construct an array
+of watches.  Some compilers will recognize this as a
+compile time error, but will generate an obscure error
+message, such as ``no specific match for generic
+name''.
+
+
+.SH BUGS
+It cannot be determined whether or not a watch variable
+or watch group has been created (passed as an argument
+to
+.B create_watch
+or
+.BR "create_watchgroup" ")."
+If a watch or watch group that has never been created
+is passed into a StopWatch subroutine, it might
+generate a Fortran error due to passing a pointer with
+undefined association status to the Fortran intrinsic
+function
+.B associated.
+However, some compilers will allow this as an extension
+to the Fortran 90 standard and recognize that the
+pointer is not associated, in which case the ``Watch
+needs to be created'' error message is generated.
+
+.SH AUTHOR
+William F. Mitchell, william.mitchell@nist.gov
+.br
+National Institute of Standards and Technology
+
+
+.SH SEE ALSO
+create_watchgroup(3), create_watch(3),
+destroy_watchgroup(3), destroy_watch(3),
+end_pause_watch(3), inquiry_stopwatch(3),
+join_watchgroup(3), leave_watchgroup(3),
+option_stopwatch(3), pause_watch(3), print_watch(3),
+read_watch(3), reset_watch(3), start_watch(3),
+stop_watch(3)

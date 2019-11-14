@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> StopWatch  User's Guide Version 1.0</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" StopWatch  User's Guide Version 1.0">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html10 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif_gr.gif"> <IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif_gr.gif"> <A NAME=tex2html12 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html11 HREF="node1.html">Contents</A>
+<BR> <HR> <P>
+<P>
+<H1> StopWatch  User's Guide Version 1.0</H1>
+<P><STRONG>William F. Mitchell<BR> 
+        Information Technology Laboratory <BR> 
+        National Institute of Standards and Technology <BR> 
+        Gaithersburg, MD 20899 USA</STRONG><P>
+<P><STRONG>Fri Dec 20 10:39:47 EST 1996
+</STRONG><P>
+<P>
+<H3>Abstract:</H3>
+<EM>StopWatch  is a Fortran 90 module for portable, easy-to-use measurement of
+execution time.  It supports four clocks -- wall clock, CPU clock,
+user CPU clock and system CPU clock -- and returns all times in seconds.
+It provides a simple means of determining which clocks are available,
+and the precision of those clocks.
+StopWatch  is used by instrumenting your code with subroutine calls that
+mimic the operation of a stop watch.  StopWatch  supports multiple watches,
+and provides the concept of watch groups to allow functions to operate on
+multiple watches simultaneously.
+<P>
+The StopWatch  software and documentation have been produced as part of
+work done by the U.S. Government, and are not subject to copyright in the
+United States.
+<P>
+The mention of specific products, trademarks, or brand names in
+the StopWatch  documentation
+is for purposes of identification only.  Such mention is not to
+be interpreted in any way as an endorsement or certification of such products
+or brands by the National Institute of Standards and Technology.
+All trademarks mentioned herein belong to their respective owners.
+<P>
+
+<P>
+</EM><P>
+<BR> <HR>
+<UL> 
+<LI> <A NAME=tex2html13 HREF="node1.html#SECTION00100000000000000000">Contents</A>
+<LI> <A NAME=tex2html14 HREF="node2.html#SECTION00200000000000000000"> Introduction</A>
+<LI> <A NAME=tex2html15 HREF="node3.html#SECTION00300000000000000000"> Quick Start</A>
+<LI> <A NAME=tex2html16 HREF="node4.html#SECTION00400000000000000000"> Obtaining and Compiling StopWatch </A>
+<LI> <A NAME=tex2html17 HREF="node5.html#SECTION00500000000000000000"> Using StopWatch </A>
+<UL> 
+<LI> <A NAME=tex2html18 HREF="node6.html#SECTION00510000000000000000"> Watches, Clocks and Watch Groups</A>
+<LI> <A NAME=tex2html19 HREF="node7.html#SECTION00520000000000000000"> Operations on Watches</A>
+<LI> <A NAME=tex2html20 HREF="node8.html#SECTION00530000000000000000"> Operations on Watch Groups</A>
+<LI> <A NAME=tex2html21 HREF="node9.html#SECTION00540000000000000000"> Options and System Inquiries</A>
+</UL> 
+<LI> <A NAME=tex2html22 HREF="node10.html#SECTION00600000000000000000"> Examples</A>
+<LI> <A NAME=tex2html23 HREF="node11.html#SECTION00700000000000000000"> Trouble Shooting</A>
+<LI> <A NAME=tex2html24 HREF="node12.html#SECTION00800000000000000000"> Subroutine  cpu_second </A>
+<LI> <A NAME=tex2html25 HREF="node13.html#SECTION00900000000000000000"> Acknowledgments</A>
+<LI> <A NAME=tex2html26 HREF="node14.html#SECTION001000000000000000000"> Reference Manual</A>
+<UL> 
+<LI> <A NAME=tex2html27 HREF="node15.html#SECTION001010000000000000000"> create_watchgroup</A>
+<LI> <A NAME=tex2html28 HREF="node16.html#SECTION001020000000000000000"> create_watch</A>
+<LI> <A NAME=tex2html29 HREF="node17.html#SECTION001030000000000000000"> destroy_watchgroup</A>
+<LI> <A NAME=tex2html30 HREF="node18.html#SECTION001040000000000000000"> destroy_watch</A>
+<LI> <A NAME=tex2html31 HREF="node19.html#SECTION001050000000000000000"> end_pause_watch</A>
+<LI> <A NAME=tex2html32 HREF="node20.html#SECTION001060000000000000000"> inquiry_stopwatch</A>
+<LI> <A NAME=tex2html33 HREF="node21.html#SECTION001070000000000000000"> join_watchgroup</A>
+<LI> <A NAME=tex2html34 HREF="node22.html#SECTION001080000000000000000"> leave_watchgroup</A>
+<LI> <A NAME=tex2html35 HREF="node23.html#SECTION001090000000000000000"> option_stopwatch</A>
+<LI> <A NAME=tex2html36 HREF="node24.html#SECTION0010100000000000000000"> pause_watch</A>
+<LI> <A NAME=tex2html37 HREF="node25.html#SECTION0010110000000000000000"> print_watch</A>
+<LI> <A NAME=tex2html38 HREF="node26.html#SECTION0010120000000000000000"> read_watch</A>
+<LI> <A NAME=tex2html39 HREF="node27.html#SECTION0010130000000000000000"> reset_watch</A>
+<LI> <A NAME=tex2html40 HREF="node28.html#SECTION0010140000000000000000"> start_watch</A>
+<LI> <A NAME=tex2html41 HREF="node29.html#SECTION0010150000000000000000"> stop_watch</A>
+</UL>
+</UL>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>

@@ -1,0 +1,173 @@
+.TH JOIN_WATCHGROUP 3 "January 3, 1997" "StopWatch 1.0" "STOPWATCH PROCEDURES"
+.PD 0.0v
+
+
+.SH NAME
+join_watchgroup - adds a StopWatch watch to a watch
+group
+
+.SH SYNOPSIS
+subroutine
+.BI "join_watchgroup" "(watch, handle, err)"
+
+
+.IP
+type (watchtype), intent(IN) ::  watch
+.IP OR
+type (watchtype), intent(IN) ::  watch(:)
+
+
+.IP
+type (watchgroup), intent(INOUT) ::  handle
+.IP
+integer, optional, intent(OUT) ::  err
+
+
+.SH DESCRIPTION
+Adds the specified watch(es) to the specified watch
+group.  The watch(es) and group must have been
+previously created with
+.B create_watch
+and
+.B create_watchgroup.
+
+
+One or more watches must be specified.  The argument
+.I watch
+can be a single variable of type
+.I watchtype
+(see
+.BR "stopwatch" "(3))"
+to add one watch, an array of type
+.I watchtype
+to add several watches.
+
+The watch group is specified by
+.I handle,
+a variable of type
+.I watchgroup.
+
+
+.SH DIAGNOSTICS
+If present, the optional intent OUT integer argument
+.I err
+returns a status code.  The code is the sum of the
+values listed below.
+
+An error message will be printed to a specified I/O
+unit (unit 6 by default) if
+.I print_errors
+is TRUE (default is TRUE). The error message contains
+more detail about the cause of the error than can be
+obtained from just the status code, so you should set
+.I print_errors
+to TRUE if you have trouble determining the cause of
+the error.
+
+If
+.I abort_errors
+is TRUE (default is FALSE), the program will terminate
+on an error condition.  Otherwise, the program will
+continue execution but the watch(es) will not be added
+to the group.
+
+See
+.BR "option_stopwatch" "(3)"
+for further information on
+.I print_errors, abort_errors
+and I/O units.
+
+The relevant status codes and messages are:
+
+
+.IP 0
+No errors; execution successful.
+
+
+.IP 1
+Watch needs to be created.  This error occurs if you
+attempt to add a watch that has been destroyed to a
+group.  The watch must first be created again.  See
+also the comment about watches that have never been
+created in the BUGS section.
+
+
+.IP 512
+Failed to allocate required memory.  Memory is
+allocated in the group when a watch is added.  Also,
+when
+.B join_watchgroup
+is called with an array or group of watches, temporary
+memory is allocated.  This error occurs if the Fortran
+.B allocate
+statement returns a nonzero status indicating that
+memory could not be allocated.  Avoid memory leaks by
+always destroying watches and groups before recreating
+them, and destroying local variable watches and groups
+before returning from a subroutine.
+
+
+.IP 1024
+Error occurred while deallocating memory.  This error
+occurs if the Fortran
+.B deallocate
+statement returns a nonzero status while deallocating
+temporary memory used for an array or group of watches.
+The watches are added to the group, but be aware that
+other problems could develop as a result of the
+deallocate error.
+
+
+.LP
+
+.SH EXAMPLES
+type (watchtype) w1, w2(3)
+.br
+type (watchgroup) g1
+.br
+integer errcode
+
+call join_watchgroup(w1, g1)
+.br
+call join_watchgroup(w2, g1, errcode)
+
+The first call adds the watch
+.I w1
+to watch group
+.I g1.
+The second call adds three watch to
+.I g1
+and returns a status code.
+
+.SH BUGS
+It cannot be determined whether or not a watch variable
+or watch group has been created (passed as an argument
+to
+.B create_watch
+or
+.BR "create_watchgroup" ")."
+If a watch or watch group that has never been created
+is passed into
+.B join_watchgroup,
+it might generate a Fortran error due to passing a
+pointer with undefined association status to the
+Fortran intrinsic function
+.B associated.
+However, some compilers will allow this as an extension
+to the Fortran 90 standard and recognize that the
+pointer is not associated, in which case the ``Watch
+needs to be created'' error message is generated.
+
+.SH AUTHOR
+William F. Mitchell, william.mitchell@nist.gov
+.br
+National Institute of Standards and Technology
+
+
+.SH SEE ALSO
+stopwatch(3), create_watchgroup(3), create_watch(3),
+destroy_watchgroup(3), destroy_watch(3),
+end_pause_watch(3), inquiry_stopwatch(3),
+leave_watchgroup(3), option_stopwatch(3),
+pause_watch(3), print_watch(3), read_watch(3),
+reset_watch(3), start_watch(3), stop_watch(3)

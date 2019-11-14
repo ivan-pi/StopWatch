@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> Using StopWatch </TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" Using StopWatch ">
+<meta name="keywords" value="user_guide">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html121 HREF="node6.html"><IMG ALIGN=BOTTOM ALT="next" SRC="icons/next_motif.gif"></A> <A NAME=tex2html119 HREF="user_guide.html"><IMG ALIGN=BOTTOM ALT="up" SRC="icons/up_motif.gif"></A> <A NAME=tex2html113 HREF="node4.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="icons/previous_motif.gif"></A> <A NAME=tex2html123 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="icons/contents_motif.gif"></A>  <BR>
+<B> Next:</B> <A NAME=tex2html122 HREF="node6.html"> WatchesClocks and </A>
+<B>Up:</B> <A NAME=tex2html120 HREF="user_guide.html"> StopWatch  User's Guide </A>
+<B> Previous:</B> <A NAME=tex2html114 HREF="node4.html"> Obtaining and Compiling </A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION00500000000000000000> Using StopWatch </A></H1>
+<P>
+The entities in StopWatch  that have public accessibility are two derived types
+and fifteen subroutines.  Any
+program unit that references any of these entities must use the
+<tt> stopwatch</tt>  module, i.e., must contain the statement
+<P>
+<PRE>use stopwatch
+</PRE>
+<P>
+The derived types are:
+<P>
+<UL><LI> <tt> watchtype</tt>  -- used for declaring a variable to be a watch
+<LI> <tt> watchgroup</tt>  -- used for declaring a variable to be a handle for
+a group of watches
+</UL>
+<P>
+These two types have public accessibility, but the internals of the type
+are private.  Any operations performed on a variable of one of these types
+must be performed by one of the StopWatch  subroutines.
+<P>
+This section describes, in general terms, the operations that can be performed
+by the StopWatch  subroutines.  The formal interfaces and detailed
+descriptions of the routines can be found in Section <A HREF="node14.html#refman">9</A>.
+<P>
+<BR> <HR>
+<UL> 
+<LI> <A NAME=tex2html124 HREF="node6.html#SECTION00510000000000000000"> Watches, Clocks and Watch Groups</A>
+<LI> <A NAME=tex2html125 HREF="node7.html#SECTION00520000000000000000"> Operations on Watches</A>
+<LI> <A NAME=tex2html126 HREF="node8.html#SECTION00530000000000000000"> Operations on Watch Groups</A>
+<LI> <A NAME=tex2html127 HREF="node9.html#SECTION00540000000000000000"> Options and System Inquiries</A>
+</UL>
+<BR> <HR>
+<P><ADDRESS>
+william.mitchell@nist.gov
+</ADDRESS>
+</BODY>
